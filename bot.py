@@ -2,24 +2,24 @@ import discord
 import os
 import random
 from dotenv import load_dotenv
+from discord.ext import commands
+from gtts import gTTS
 
 load_dotenv()
-  
-client = discord.Client(intents=discord.Intents.all())
+
+bot = commands.Bot(command_prefix='.', intents=discord.Intents.all())
 token = os.getenv('TOKEN')
 
-@client.event
+@bot.event
 async def on_ready():
-    print("Logged in as a bot {0.user}".format(client))
+    print("Logged in as a bot {0.user}".format(bot))
 
 
-@client.event
-async def on_message(message):
+@bot.command()
+async def hello(ctx):
     # Checking to make sure the bot (client.user) is not the one that sent the message (message.author)
-    if message.author == client.user:
+    if ctx.author == bot.user:
         return
+    await ctx.send('Hello!')
 
-    if message.content.startswith('.hello'):
-        await message.channel.send('Hello!')
-
-client.run(token)
+bot.run(token)
