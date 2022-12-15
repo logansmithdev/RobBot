@@ -40,6 +40,9 @@ async def tts(ctx, *, text):
     # Checking to make sure the bot (client.user) is not the one that sent the message (message.author)
     if ctx.author == bot.user:
         return
+    if not (ctx.author.voice and ctx.author.voice.channel):
+        await ctx.send("Please join a voice channel first")
+        return
     voice_client = discord.utils.get(bot.voice_clients, guild=ctx.author.guild)
     if voice_client and voice_client.is_connected():
         await ctx.send("Please wait until I am finished speaking.")
