@@ -36,7 +36,7 @@ async def on_voice_state_update(member, before, after):
 
 
 @bot.command()
-async def tts(ctx, *, text):
+async def tts(ctx, *, text1:str):
     # Checking to make sure the bot (client.user) is not the one that sent the message (message.author)
     if ctx.author == bot.user:
         return
@@ -47,11 +47,11 @@ async def tts(ctx, *, text):
     if voice_client and voice_client.is_connected():
         await ctx.send("Please wait until I am finished speaking.")
         return
-    await playTTS(ctx.author.voice.channel, text)
+    await playTTS(ctx.author.voice.channel, text1)
 
-async def playTTS(voiceChannel, text):
+async def playTTS(voiceChannel, text1: str):
     vc = await voiceChannel.connect()
-    speech = gTTS(text = text, lang = 'en', slow = False)
+    speech = gTTS(text = text1, lang = 'en', slow = False)
     cwd = os.getcwd()
     audioFilePath = cwd + "/audio.mp3"
     speech.save(audioFilePath)
@@ -59,6 +59,5 @@ async def playTTS(voiceChannel, text):
     audio = MP3(audioFilePath)
     await asyncio.sleep(audio.info.length)
     await vc.disconnect()
-    
 
 bot.run(token)
